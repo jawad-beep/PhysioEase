@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysioEase Registration - Empower Your Practice</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f4f7f9;
+            --white: #ffffff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .logo svg {
+            margin-right: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            display: flex;
+        }
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), #74b9ff);
+            color: var(--white);
+            padding: 100px 0 50px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+        .content {
+            flex: 1;
+            min-width: 300px;
+        }
+        form {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #3a7bd5;
+        }
+        .sidebar {
+            flex: 0 0 300px;
+        }
+        .benefits {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .benefits h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        .benefits ul {
+            padding-left: 1.5rem;
+        }
+        .benefits li {
+            margin-bottom: 0.5rem;
+        }
+        .testimonials {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .testimonial {
+            display: none;
+            background-color: #e8f4fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .testimonial.active {
+            display: block;
+        }
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        footer {
+            background-color: #2c3e50;
+            color: var(--white);
+            padding: 3rem 0;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        .footer-section ul {
+            list-style-type: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-section a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-section a:hover {
+            color: var(--secondary-color);
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #34495e;
+        }
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+            }
+            nav ul li {
+                margin: 0.5rem 1rem 0.5rem 0;
+            }
+            main {
+                flex-direction: column;
+            }
+            .sidebar {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <a href="#" class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z"></path>
+                <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+            </svg>
+            PhysioEase
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Pricing</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <h1>Empower Your Physiotherapy Practice</h1>
+        <p>Join PhysioEase and revolutionize the way you manage your patients, appointments, and clinic operations.</p>
+    </div>
+</section>
+
+<main class="container">
+    <div class="content">
+        <form id="registrationForm">
+            <h2>Create Your Account</h2>
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="licenseNumber">License Number</label>
+                <input type="text" id="licenseNumber" name="licenseNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="specialization">Specialization</label>
+                <select id="specialization" name="specialization" required>
+                    <option value="">Select a specialization</option>
+                    <option value="orthopedic">Orthopedic</option>
+                    <option value="neurological">Neurological</option>
+                    <option value="cardiopulmonary">Cardiopulmonary</option>
+                    <option value="pediatric">Pediatric</option>
+                    <option value="geriatric">Geriatric</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="yearsOfExperience">Years of Experience</label>
+                <input type="number" id="yearsOfExperience" name="yearsOfExperience" min="0" required>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                    I agree to the <a href="#">Terms and Conditions</a>
+                </label>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <aside class="sidebar">
+        <div class="benefits">
+            <h2>Why Choose PhysioEase?</h2>
+            <ul>
+                <li>Streamlined patient management</li>
+                <li>Integrated billing and invoicing</li>
+                <li>Customizable treatment plans</li>
+                <li>Secure patient data storage</li>
+                <li>Appointment scheduling and reminders</li>
+                <li>Comprehensive reporting tools</li>
+                <li>Mobile app for on-the-go access</li>
+            </ul>
+        </div>
+        <div class="testimonials">
+            <h2>What Our Users Say</h2>
+            <div id="testimonialCarousel">
+                <div class="testimonial active">
+                    <p>"PhysioEase has revolutionized my practice. I can't imagine working without it now!"</p>
+                    <span class="testimonial-author">- Dr. Jane Smith, PT</span>
+                </div>
+                <div class="testimonial">
+                    <p>"The customizable treatment plans have saved me hours of work each week. Highly recommended!"</p>
+                    <span class="testimonial-author">- Mark Johnson, DPT</span>
+                </div>
+                <div class="testimonial">
+                    <p>"Patient management has never been easier. PhysioEase is a game-changer for my clinic."</p>
+                    <span class="testimonial-author">- Sarah Lee, MPT</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>PhysioEase</h3>
+                <p>Empowering physiotherapists with cutting-edge practice management tools.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 PhysioEase. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Form submission handling
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        if (data.password !== data.confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        // Here you would typically send the data to your server
+        console.log('Form submitted:', data);
+        alert('Registration successful! (This is a demo - no data was actually sent)');
+
+        // Reset form
+        this.reset();
+    });
+
+    // Testimonial carousel
+    const testimonials = document.querySelectorAll('.testimonial');
+    let currentTestimonial = 0;
+
+    function showNextTestimonial() {
+        testimonials[currentTestimonial].classList.remove('active');
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+        testimonials[currentTestimonial].classList.add('active');
+    }
+
+    setInterval(showNextTestimonial, 5000); // Change testimonial every 5 seconds
+</script>
+</body>
+</html>
+
