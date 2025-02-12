@@ -8,6 +8,7 @@ public class Physiotherapist {
     private double physiotherapistLatitude;
     private double physiotherapistLongitude;
     private String physiotherapistSpecialization;
+
     private int physiotherapistExperience;
     private double distance;
 
