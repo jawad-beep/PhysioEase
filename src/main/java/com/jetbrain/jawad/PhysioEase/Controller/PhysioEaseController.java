@@ -1,7 +1,9 @@
     package com.jetbrain.jawad.PhysioEase.Controller;
     import com.jetbrain.jawad.PhysioEase.Model.Patient;
     import com.jetbrain.jawad.PhysioEase.Model.Physiotherapist;
+    import com.jetbrain.jawad.PhysioEase.Service.PatientService;
     import jakarta.servlet.http.HttpSession;
+    import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.HttpEntity;
     import org.springframework.http.ResponseEntity;
     import org.springframework.stereotype.Controller;
@@ -41,5 +43,11 @@
             Physiotherapist physiotherapist=new Physiotherapist(physiotherapistName, physiotherapistLatitude, physiotherapistLongitude, physiotherapistSpecialization, physiotherapistExperience);
             session.setAttribute("physiotherapist",physiotherapist);
             return ResponseEntity.ok("/view/getPhysiotherapists");
+        }
+        @Autowired
+        private PatientService patientService;
+        @GetMapping("/patients")
+        public List<Patient> getAllPatients() {
+            return patientService.getAllPatients();
         }
     }
