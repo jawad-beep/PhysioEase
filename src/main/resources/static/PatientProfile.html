@@ -1,0 +1,37 @@
+<form id="editPatientForm">
+    <input type="hidden" id="patientId" value="1" />  <!-- Patient ID -->
+
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" value="John" required />
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" value="Doe" required />
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<script>
+    document.getElementById("editPatientForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        const patientId = document.getElementById("patientId").value;
+        const updatedPatient = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value
+        };
+
+        fetch(`/api/patients/${patientId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedPatient)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Profile updated successfully!");
+                location.reload(); // Refresh the page to see updated data
+            })
+            .catch(error => console.error("Error:", error));
+    });
+</script>
