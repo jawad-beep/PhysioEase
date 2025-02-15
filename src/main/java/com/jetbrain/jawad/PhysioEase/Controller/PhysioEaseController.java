@@ -4,14 +4,11 @@
     import com.jetbrain.jawad.PhysioEase.Service.PatientService;
     import jakarta.servlet.http.HttpSession;
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.http.HttpEntity;
     import org.springframework.http.ResponseEntity;
-    import org.springframework.stereotype.Controller;
-    import org.springframework.ui.Model;
     import org.springframework.web.bind.annotation.*;
 
-    import java.util.ArrayList;
     import java.util.List;
+    import java.util.Optional;
 
     @RestController
     @RequestMapping("/api")
@@ -44,18 +41,26 @@
             session.setAttribute("physiotherapist",physiotherapist);
             return ResponseEntity.ok("/view/getPhysiotherapists");
         }
+
         @Autowired
-        private PatientService patientDetails;
+        private PatientService patientService;
         @GetMapping("/patients")
         public List<Patient> getAllPatients() {
             return patientService.getAllPatients();
         }
-        @Autowired
-        private PatientService patientService;
+
+        @GetMapping("/patients/{id}")
+        public Optional<Patient> getPatientById(@PathVariable int id) {
+            return patientService.getPatientById(id); // This should return the patient data for the given ID
+        }
+
 
         // Update Patient Details
-        @PutMapping("/{id}")
-        public Patient updatePatient(@PathVariable String id, @RequestBody Patient updatedPatient) {
+        @PutMapping("/patients/{id}")
+        public Patient updatePatient(@PathVariable int id, @RequestBody Patient updatedPatient) {
+            System.out.println("Updating Patient ID: " + id);
+            System.out.println("Received Data: " + updatedPatient);
             return patientService.updatePatient(id, updatedPatient);
         }
     }
+

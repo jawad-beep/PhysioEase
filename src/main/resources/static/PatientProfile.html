@@ -1,23 +1,60 @@
 <form id="editPatientForm">
-    <input type="hidden" id="patientId" value="1" />  <!-- Patient ID -->
+    <input type="hidden" id="patientId" value="1" />  <!-- Patient ID will be set dynamically -->
 
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" name="firstName" value="John" required />
+    <label for="firstname">First Name:</label>
+    <input type="text" id="firstname" name="firstname" required />
 
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName" value="Doe" required />
+    <label for="lastname">Last Name:</label>
+    <input type="text" id="lastname" name="lastname" required />
+
+    <label for="age">Age:</label>
+    <input type="text" id="age" name="age" required />
+
+    <label for="gender">Gender:</label>
+    <input type="text" id="gender" name="gender" required />
+
+    <label for="contactnumber">Contact Number:</label>
+    <input type="text" id="contactnumber" name="contactnumber" required />
+
+    <label for="emailaddress">Email Address:</label>
+    <input type="text" id="emailaddress" name="emailaddress" required />
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required />
 
     <button type="submit">Save Changes</button>
 </form>
 
 <script>
-    document.getElementById("editPatientForm").addEventListener("submit", function (event) {
+    // Assume the patient ID is part of the URL or set dynamically
+    const patientId = document.getElementById("patientId").value;
+
+    // Fetch the patient data from the backend
+    fetch(`/api/patients/${patientId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Populate the form fields with the fetched data
+            document.getElementById("firstname").value = data.firstname;
+            document.getElementById("lastname").value = data.lastname;
+            document.getElementById("age").value = data.age;
+            document.getElementById("gender").value = data.gender;
+            document.getElementById("contactnumber").value = data.contactnumber;
+            document.getElementById("emailaddress").value = data.emailaddress;
+            document.getElementById("address").value = data.address;
+        })
+        .catch(error => console.error("Error fetching patient data:", error));
+
+    document.getElementById("editPatientForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent page reload
 
-        const patientId = document.getElementById("patientId").value;
         const updatedPatient = {
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value
+            firstname: document.getElementById("firstname").value,
+            lastname: document.getElementById("lastname").value,
+            age: document.getElementById("age").value,
+            gender: document.getElementById("gender").value,
+            contactnumber: document.getElementById("contactnumber").value,
+            emailaddress: document.getElementById("emailaddress").value,
+            address: document.getElementById("address").value
         };
 
         fetch(`/api/patients/${patientId}`, {
@@ -29,9 +66,10 @@
         })
             .then(response => response.json())
             .then(data => {
+                console.log("Profile updated successfully!");
                 alert("Profile updated successfully!");
                 location.reload(); // Refresh the page to see updated data
             })
-            .catch(error => console.error("Error:", error));
+            .catch(error => console.error("Error updating profile:", error));
     });
 </script>

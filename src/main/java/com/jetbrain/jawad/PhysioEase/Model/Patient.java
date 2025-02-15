@@ -19,10 +19,10 @@ public class Patient {
     @Transient
     private String patientSpecialization;
     @Id
-    private String patientid;
+    private int patientid;
     private String firstname;
     private String lastname;
-    private String age;
+    private int age;
     private String gender;
     private String contactnumber;
     private String emailaddress;
@@ -48,7 +48,7 @@ public class Patient {
     public String getPatientSpecialization() {return patientSpecialization;}
     public void setPatientSpecialization(String patientSpecialization) {this.patientSpecialization = patientSpecialization;}
 
-    public String getPatientid() {
+    public int getPatientid() {
         return patientid;
     }
     public void setPatientid(String patientid) {}
@@ -56,10 +56,15 @@ public class Patient {
     public void setFirstname(String firstname) {this.firstname = firstname;}
     public String getLastname() {return lastname;}
     public void setLastname(String lastname) {this.lastname = lastname;}
-    public String getAge() {return age;}
-    public void setAge(String age) {this.age = age;}
+    public int getAge() {return age;}
+    public void setAge(int age) {this.age = age;}
     public String getGender() {return gender;}
     public void setGender(String gender) {this.gender = gender;}
+
+    public void setContactnumber(String contactnumber) {
+        this.contactnumber = contactnumber;
+    }
+
     public String getContactnumber() {return contactnumber;}
 
     public String getEmailaddress() {
