@@ -2,14 +2,13 @@ package com.jetbrain.jawad.PhysioEase.Controller;
 
 import com.jetbrain.jawad.PhysioEase.Model.Patient;
 import com.jetbrain.jawad.PhysioEase.Model.Physiotherapist;
-import com.jetbrain.jawad.PhysioEase.Controller.PhysioEaseViewController;
+import com.jetbrain.jawad.PhysioEase.Service.PatientService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 
 import java.util.ArrayList;
@@ -172,6 +171,14 @@ public class PhysioEaseViewController {
         } else {
             return -1;
         }
+    }
+    @Autowired
+    private PatientService patientService;
+    @GetMapping("/patients")
+    public String getAllPatients(Model model) {
+        List<Patient> patients = patientService.getAllPatients();
+        model.addAttribute("patients", patients);
+        return "updatedpatientprofile";  // This should match the Thymeleaf or JSP file name
     }
 }
 

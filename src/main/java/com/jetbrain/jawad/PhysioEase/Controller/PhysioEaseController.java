@@ -42,13 +42,8 @@
             return ResponseEntity.ok("/view/getPhysiotherapists");
         }
 
-        @Autowired
-        private PatientService patientService;
-        @GetMapping("/patients")
-        public List<Patient> getAllPatients() {
-            return patientService.getAllPatients();
-        }
 
+        private PatientService patientService;
         @GetMapping("/patients/{id}")
         public Optional<Patient> getPatientById(@PathVariable int id) {
             return patientService.getPatientById(id); // This should return the patient data for the given ID
