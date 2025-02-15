@@ -45,9 +45,17 @@
             return ResponseEntity.ok("/view/getPhysiotherapists");
         }
         @Autowired
-        private PatientService patientService;
+        private PatientService patientDetails;
         @GetMapping("/patients")
         public List<Patient> getAllPatients() {
             return patientService.getAllPatients();
+        }
+        @Autowired
+        private PatientService patientService;
+
+        // Update Patient Details
+        @PutMapping("/{id}")
+        public Patient updatePatient(@PathVariable String id, @RequestBody Patient updatedPatient) {
+            return patientService.updatePatient(id, updatedPatient);
         }
     }

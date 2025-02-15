@@ -5,6 +5,7 @@ import com.jetbrain.jawad.PhysioEase.Repository.PatientRepository;  // Corrected
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -14,5 +15,17 @@ public class PatientService {
 
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
+    }
+    public Patient updatePatient(String id, Patient updatedPatient) {
+        Optional<Patient> existingPatient = patientRepository.findById(id);
+
+        if (existingPatient.isPresent()) {
+            Patient patient = existingPatient.get();
+            patient.setFirstname(updatedPatient.getFirstname());
+            patient.setLastname(updatedPatient.getLastname());
+            return patientRepository.save(patient); // Save updated data in the database
+        } else {
+            throw new RuntimeException("Patient not found with ID: " + id);
+        }
     }
 }
