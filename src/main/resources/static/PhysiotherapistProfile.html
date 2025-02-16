@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physiotherapist Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Physiotherapist Profile</h2>
+    <form id="physiotherapistForm">
+        <input type="hidden" id="physiotherapistId" value="1" />
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" required />
+
+        <label for="specialization">Specialization:</label>
+        <input type="text" id="specialization" required />
+
+        <label for="experience">Experience (years):</label>
+        <input type="number" id="experience" required />
+
+        <label for="clinic">Clinic Address:</label>
+        <input type="text" id="clinic" required />
+
+        <label for="contact">Contact Number:</label>
+        <input type="text" id="contact" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required />
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+<script>
+    const physiotherapistId = document.getElementById("physiotherapistId").value;
+
+    // Fetch physiotherapist data
+    fetch(`/api/physiotherapists/${physiotherapistId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("name").value = data.physiotherapistName;
+            document.getElementById("specialization").value = data.physiotherapistSpecialization;
+            document.getElementById("experience").value = data.physiotherapistExperience;
+            document.getElementById("clinic").value = data.clinicAddress;
+            document.getElementById("contact").value = data.physiotherapistContactNumber;
+            document.getElementById("email").value = data.physiotherapistEmailAddress;
+        })
+        .catch(error => console.error("Error fetching physiotherapist data:", error));
+
+    document.getElementById("physiotherapistForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const updatedPhysiotherapist = {
+            physiotherapistName: document.getElementById("name").value,
+            physiotherapistSpecialization: document.getElementById("specialization").value,
+            physiotherapistExperience: document.getElementById("experience").value,
+            clinicAddress: document.getElementById("clinic").value,
+            physiotherapistContactNumber: document.getElementById("contact").value,
+            physiotherapistEmailAddress: document.getElementById("email").value
+        };
+
+        fetch(`/api/physiotherapists/${physiotherapistId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedPhysiotherapist)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Profile updated successfully!");
+                location.reload();
+            })
+            .catch(error => console.error("Error updating profile:", error));
+    });
+</script>
+
+</body>
+</html>

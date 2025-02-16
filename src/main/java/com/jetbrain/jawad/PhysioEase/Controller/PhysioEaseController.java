@@ -2,6 +2,7 @@
     import com.jetbrain.jawad.PhysioEase.Model.Patient;
     import com.jetbrain.jawad.PhysioEase.Model.Physiotherapist;
     import com.jetbrain.jawad.PhysioEase.Service.PatientService;
+    import com.jetbrain.jawad.PhysioEase.Service.PhysiotherapistService;
     import jakarta.servlet.http.HttpSession;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.ResponseEntity;
@@ -27,7 +28,6 @@
             return ResponseEntity.ok("/view/getPhysiotherapists");
         }
 
-
         @PostMapping("/RegisterPhysiotherapist")
         public ResponseEntity<String> PhysiotherapistDetails(@RequestBody Physiotherapist physiotherapistDetails, HttpSession session)
         {
@@ -41,14 +41,12 @@
             session.setAttribute("physiotherapist",physiotherapist);
             return ResponseEntity.ok("/view/getPhysiotherapists");
         }
-
-
+        @Autowired
         private PatientService patientService;
         @GetMapping("/patients/{id}")
         public Optional<Patient> getPatientById(@PathVariable int id) {
             return patientService.getPatientById(id); // This should return the patient data for the given ID
         }
-
 
         // Update Patient Details
         @PutMapping("/patients/{id}")
@@ -57,5 +55,22 @@
             System.out.println("Received Data: " + updatedPatient);
             return patientService.updatePatient(id, updatedPatient);
         }
+
+        @Autowired
+        private PhysiotherapistService physiotherapistService;
+        @GetMapping("/physiotherapists/{id}")
+        public Optional<Physiotherapist> getPhysiotherapistById(@PathVariable int id) {
+            return physiotherapistService.getPhysiotherapistById(id);
+        }
+
+        @PutMapping("/physiotherapists/{id}")
+        public Physiotherapist updatePhysiotherapist(@PathVariable int id, @RequestBody Physiotherapist updatedPhysiotherapist) {
+            System.out.println("Updating Patient ID: " + id);
+            System.out.println("Received Data: " + updatedPhysiotherapist);
+            return physiotherapistService.updatePhysiotherapist(id, updatedPhysiotherapist);
+        }
+
+
+
     }
 

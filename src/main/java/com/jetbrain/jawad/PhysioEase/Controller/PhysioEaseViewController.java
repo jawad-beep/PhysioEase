@@ -172,14 +172,7 @@ public class PhysioEaseViewController {
             return -1;
         }
     }
-    @Autowired
-    private PatientService patientService;
-    @GetMapping("/patients")
-    public String getAllPatients(Model model) {
-        List<Patient> patients = patientService.getAllPatients();
-        model.addAttribute("patients", patients);
-        return "updatedpatientprofile";  // This should match the Thymeleaf or JSP file name
-    }
+
 }
 
 
