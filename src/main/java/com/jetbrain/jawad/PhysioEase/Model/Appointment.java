@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 public class Appointment {
     @Id
     private int appointmentid;
+    private int patientid;
+    private int physiotherapistid;
     private String bookingdate;
     private String bookingtime;
     private String appointmentstatus;
@@ -30,5 +32,28 @@ public class Appointment {
     public void setAppointmentstatus(String appointmentstatus) {this.appointmentstatus = appointmentstatus;}
     public String getAppointmenttype() {return appointmenttype;}
     public void setAppointmenttype(String appointmenttype) {this.appointmenttype = appointmenttype;}
+    public int getAppointmentid() {
+        return appointmentid;
+    }
+
+    public void setAppointmentid(int appointmentid) {
+        this.appointmentid = appointmentid;
+    }
+
+    public int getPatientid() {
+        return patientid;
+    }
+
+    public void setPatientid(int patientid) {
+        this.patientid = patientid;
+    }
+
+    public int getPhysiotherapistid() {
+        return physiotherapistid;
+    }
+
+    public void setPhysiotherapistid(int physiotherapistid) {
+        this.physiotherapistid = physiotherapistid;
+    }
 
 }
