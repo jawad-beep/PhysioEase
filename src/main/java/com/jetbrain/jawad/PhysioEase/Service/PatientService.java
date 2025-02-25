@@ -42,4 +42,6 @@ public class PatientService {
     public Optional<Patient> getPatientById(int patientid) {
         return patientRepository.findById(patientid);
     }
+
+
 }

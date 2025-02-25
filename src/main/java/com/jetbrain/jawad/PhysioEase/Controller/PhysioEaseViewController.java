@@ -2,9 +2,7 @@ package com.jetbrain.jawad.PhysioEase.Controller;
 
 import com.jetbrain.jawad.PhysioEase.Model.Patient;
 import com.jetbrain.jawad.PhysioEase.Model.Physiotherapist;
-import com.jetbrain.jawad.PhysioEase.Service.PatientService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,11 @@
 package com.jetbrain.jawad.PhysioEase.Model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "Appointment")
 public class Appointment {
     @Id
     private int appointmentid;
