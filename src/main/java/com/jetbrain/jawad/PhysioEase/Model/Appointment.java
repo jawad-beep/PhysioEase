@@ -1,15 +1,15 @@
 package com.jetbrain.jawad.PhysioEase.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Appointment")
 public class Appointment {
     @Id
     private int appointmentid;
-    private int patientid;
+    @ManyToOne
+    @JoinColumn(name = "physiotherapistid", insertable = false, updatable = false)  // This assumes the foreign key in the table is 'physiotherapist_id'
+    private Physiotherapist physiotherapist;
     private int physiotherapistid;
     private String bookingdate;
     private String bookingtime;
@@ -40,13 +40,7 @@ public class Appointment {
         this.appointmentid = appointmentid;
     }
 
-    public int getPatientid() {
-        return patientid;
-    }
 
-    public void setPatientid(int patientid) {
-        this.patientid = patientid;
-    }
 
     public int getPhysiotherapistid() {
         return physiotherapistid;

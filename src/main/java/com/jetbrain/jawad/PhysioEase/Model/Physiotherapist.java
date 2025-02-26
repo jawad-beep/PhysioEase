@@ -1,25 +1,22 @@
 package com.jetbrain.jawad.PhysioEase.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
 @Entity
 public class Physiotherapist {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int physiotherapistid;
     private String physiotherapistname;
     private String clinicaddress;
     private String specialization;
     private int experience;
-    private int licensenumber;
-    private int contactnumber;
+    private Integer licensenumber;
+    private Integer contactnumber;
     private String email;
-    @Transient
+    @Column(name = "latitude")
     private double physiotherapistLatitude;
-    @Transient
+    @Column(name = "longitude")
     private double physiotherapistLongitude;
     @Transient
     private double distance;
@@ -90,5 +87,13 @@ public class Physiotherapist {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public int getPhysiotherapistid() {
+        return physiotherapistid;
+    }
+
+    public void setPhysiotherapistid(int physiotherapistid) {
+        this.physiotherapistid = physiotherapistid;
     }
 }

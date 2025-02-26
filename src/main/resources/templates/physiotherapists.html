@@ -131,6 +131,8 @@
             <p><strong>Latitude:</strong> <span th:text="${physio.latitude}"></span></p>
             <p><strong>Longitude:</strong> <span th:text="${physio.longitude}"></span></p>
             <p><strong>Distance:</strong> <span th:text="${physio.distance}"></span> km</p>
+            <!-- Add a hidden span with the ID -->
+            <span style="display:none;" class="physiotherapist-id-value" th:text="${physio.physiotherapistid}"></span>
         </div>
         <button class="appointment-btn">Available Appointments</button>
     </div>
