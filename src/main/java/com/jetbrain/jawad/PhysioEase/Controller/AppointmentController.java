@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AppointmentController {
@@ -29,8 +32,23 @@ public class AppointmentController {
     }
     @GetMapping("/appointments/{physiotherapistId}")
     @ResponseBody
-    public List<Appointment> getAppointments(@PathVariable int physiotherapistId) {
-        return appointmentRepository.findByPhysiotherapistId(physiotherapistId);
+    public List<Map<String, Object>> getAppointments(@PathVariable int physiotherapistId) {
+        List<Appointment> appointments = appointmentRepository.findByPhysiotherapistId(physiotherapistId);
+
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            Map<String, Object> appData = new HashMap<>();
+            appData.put("appointmentid", appointment.getAppointmentid());
+            appData.put("bookingdate", appointment.getBookingdate());
+            appData.put("bookingtime", appointment.getBookingtime());
+            appData.put("appointmentstatus", appointment.getAppointmentstatus());
+            appData.put("appointmenttype", appointment.getAppointmenttype());
+            appData.put("physiotherapistname", appointment.getPhysiotherapistName()); // ✅ Now correctly fetches name
+            appData.put("specialization", appointment.getPhysiotherapistSpecialization());
+            response.add(appData);
+        }
+
+        return response;
     }
 
 }

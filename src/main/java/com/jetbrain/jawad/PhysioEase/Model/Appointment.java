@@ -7,31 +7,38 @@ import jakarta.persistence.*;
 public class Appointment {
     @Id
     private int appointmentid;
+
     @ManyToOne
-    @JoinColumn(name = "physiotherapistid", insertable = false, updatable = false)  // This assumes the foreign key in the table is 'physiotherapist_id'
-    private Physiotherapist physiotherapist;
+    @JoinColumn(name = "physiotherapistid", insertable = false, updatable = false)
+    private Physiotherapist physiotherapist;  // Fetches physiotherapist details
+
     private int physiotherapistid;
     private String bookingdate;
     private String bookingtime;
     private String appointmentstatus;
     private String appointmenttype;
 
+    // Default constructor
     public Appointment() {}
-    public Appointment(String bookingdate, String bookingtime, String appointmentstatus, String appointmenttype) {
+
+    // Constructor with parameters
+    public Appointment(int physiotherapistid, String bookingdate, String bookingtime, String appointmentstatus, String appointmenttype) {
+        this.physiotherapistid = physiotherapistid;
         this.bookingdate = bookingdate;
         this.bookingtime = bookingtime;
         this.appointmentstatus = appointmentstatus;
         this.appointmenttype = appointmenttype;
     }
 
-    public String getBookingdate() {return bookingdate;}
-    public void setBookingdate(String bookingdate) {this.bookingdate = bookingdate;}
-    public String getBookingtime() {return bookingtime;}
-    public void setBookingtime(String bookingtime) {this.bookingtime = bookingtime;}
-    public String getAppointmentstatus() {return appointmentstatus;}
-    public void setAppointmentstatus(String appointmentstatus) {this.appointmentstatus = appointmentstatus;}
-    public String getAppointmenttype() {return appointmenttype;}
-    public void setAppointmenttype(String appointmenttype) {this.appointmenttype = appointmenttype;}
+    // ✅ Correct getter for Physiotherapist Name
+    public String getPhysiotherapistName() {
+        return (physiotherapist != null) ? physiotherapist.getPhysiotherapistName() : "Unknown";
+    }
+    public String getPhysiotherapistSpecialization() {
+        return (physiotherapist != null) ? physiotherapist.getPhysiotherapistSpecialization() : "Unknown";
+    }
+
+    // Getters and Setters
     public int getAppointmentid() {
         return appointmentid;
     }
@@ -39,8 +46,6 @@ public class Appointment {
     public void setAppointmentid(int appointmentid) {
         this.appointmentid = appointmentid;
     }
-
-
 
     public int getPhysiotherapistid() {
         return physiotherapistid;
@@ -50,4 +55,36 @@ public class Appointment {
         this.physiotherapistid = physiotherapistid;
     }
 
+    public String getBookingdate() {
+        return bookingdate;
+    }
+
+    public void setBookingdate(String bookingdate) {
+        this.bookingdate = bookingdate;
+    }
+
+    public String getBookingtime() {
+        return bookingtime;
+    }
+
+    public void setBookingtime(String bookingtime) {
+        this.bookingtime = bookingtime;
+    }
+
+    public String getAppointmentstatus() {
+        return appointmentstatus;
+    }
+
+    public void setAppointmentstatus(String appointmentstatus) {
+        this.appointmentstatus = appointmentstatus;
+    }
+
+    public String getAppointmenttype() {
+        return appointmenttype;
+    }
+
+    public void setAppointmenttype(String appointmenttype) {
+        this.appointmenttype = appointmenttype;
+    }
 }
+
