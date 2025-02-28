@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Appointments</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+      color: #2c3e50;
+    }
+
+    .appointment-container {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .appointment-card {
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 8px;
+      background-color: #fafafa;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .appointment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .appointment-card p {
+      margin: 10px 0;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .appointment-card p strong {
+      color: #2c3e50;
+    }
+
+    .book-button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #3498db;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .book-button:hover:not(:disabled) {
+      background-color: #2980b9;
+    }
+
+    .book-button:disabled {
+      background-color: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    .no-appointments {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #777;
+    }
+
+    .error-message {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #e74c3c;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .modal-content label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #3498db;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .modal-content button:hover {
+      background-color: #2980b9;
+    }
+
+    .modal-content button.cancel {
+      background-color: #e74c3c;
+      margin-left: 10px;
+    }
+
+    .modal-content button.cancel:hover {
+      background-color: #c0392b;
+    }
+
+    @media (max-width: 600px) {
+      .appointment-container {
+        width: 100%;
+        padding: 10px;
+      }
+
+      .appointment-card {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h2>Available Appointments</h2>
+
+<div id="appointments-container" class="appointment-container">
+  <!-- Appointment details will be inserted here -->
+</div>
+
+<!-- Modal for Booking Form -->
+<div id="booking-modal" class="modal">
+  <div class="modal-content">
+    <h3>Book Appointment</h3>
+    <form id="booking-form">
+      <label for="patient-name">Patient Name:</label>
+      <input type="text" id="patient-name" name="patient-name" required>
+
+      <label for="patient-problem">Patient Problem:</label>
+      <textarea id="patient-problem" name="patient-problem" rows="3" required></textarea>
+
+      <label for="patient-contact">Contact Number:</label>
+      <input type="tel" id="patient-contact" name="patient-contact" required>
+
+      <label for="patient-address">Address:</label>
+      <input type="text" id="patient-address" name="patient-address" required>
+
+      <label for="patient-age">Age:</label>
+      <input type="number" id="patient-age" name="patient-age" required>
+
+      <label for="patient-email">Email Address:</label>
+      <input type="email" id="patient-email" name="patient-email" required>
+
+      <button type="submit">Submit</button>
+      <button type="button" class="cancel" onclick="closeModal()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParts = window.location.pathname.split("/");
+    const physiotherapistId = urlParts[urlParts.length - 1];
+
+    console.log("Fetching appointments for:", physiotherapistId);
+
+    // Fetch appointments from the API
+    fetch(`/appointments/${physiotherapistId}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(appointments => {
+              const container = document.getElementById("appointments-container");
+
+              if (appointments.length === 0) {
+                container.innerHTML = "<p class='no-appointments'>No appointments available.</p>";
+                return;
+              }
+
+              appointments.forEach(app => {
+                const appointmentCard = document.createElement("div");
+                appointmentCard.classList.add("appointment-card");
+                appointmentCard.innerHTML = `
+          <p><strong>ID:</strong> ${app.appointmentid}</p>
+          <p><strong>Name:</strong> ${app.physiotherapistname}</p>
+          <p><strong>Specialization:</strong> ${app.specialization}</p>
+          <p><strong>Date:</strong> ${app.bookingdate}</p>
+          <p><strong>Time:</strong> ${app.bookingtime}</p>
+          <p><strong>Status:</strong> ${app.appointmentstatus}</p>
+          <p><strong>Type:</strong> ${app.appointmenttype}</p>
+          <button class="book-button" ${app.appointmentstatus === 'BOOKED' ? 'disabled' : ''}>
+            ${app.appointmentstatus === 'BOOKED' ? 'Booked' : 'Book'}
+          </button>
+        `;
+
+                // Add click event to the BOOK button (only if status is AVAILABLE)
+                const bookButton = appointmentCard.querySelector('.book-button');
+                if (bookButton && !bookButton.disabled) {
+                  bookButton.addEventListener('click', () => {
+                    openModal(app);
+                  });
+                }
+
+                container.appendChild(appointmentCard);
+              });
+            })
+            .catch(error => {
+              console.error("Error fetching appointments:", error);
+              document.getElementById("appointments-container").innerHTML =
+                      "<p class='error-message'>Error loading appointments. Please try again.</p>";
+            });
+
+    // Function to open the modal - now accepts the full appointment object
+    function openModal(appointment) {
+      const modal = document.getElementById("booking-modal");
+      modal.style.display = "flex";
+      modal.dataset.appointmentId = appointment.appointmentid;
+      // Store additional appointment details
+      modal.dataset.appointmentDetails = JSON.stringify(appointment);
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      const modal = document.getElementById("booking-modal");
+      modal.style.display = "none";
+      document.getElementById("booking-form").reset();
+    }
+
+    // Handle form submission
+    document.getElementById("booking-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const modal = document.getElementById("booking-modal");
+      const appointmentId = modal.dataset.appointmentId;
+      const appointmentDetails = JSON.parse(modal.dataset.appointmentDetails || '{}');
+
+      const patientName = document.getElementById("patient-name").value;
+      const patientProblem = document.getElementById("patient-problem").value;
+      const patientContact = document.getElementById("patient-contact").value;
+      const patientAddress = document.getElementById("patient-address").value;
+      const patientAge = document.getElementById("patient-age").value;
+      const patientEmail = document.getElementById("patient-email").value;
+
+      console.log("Booking appointment with ID:", appointmentId);
+
+      // Create the booking data object to match the database field names
+      const bookingData = {
+        // Match the exact field names from the error message
+        patientname: patientName,
+        patientproblem: patientProblem,
+        contactnumber: patientContact,
+        patientaddress: patientAddress,
+        // patientage: patientAge, // This field doesn't appear in the error, so might not be required
+        emailaddress: patientEmail,
+        appointmentdate: appointmentDetails.bookingdate,
+        appointmenttime: appointmentDetails.bookingtime
+
+        // The following fields are not in the SQL insert statement, so they might be handled differently
+        // or set with default values in the backend
+        // appointmentId: appointmentId,
+        // physiotherapistId: physiotherapistId,
+        // physiotherapistName: appointmentDetails.physiotherapistname,
+        // appointmentType: appointmentDetails.appointmenttype,
+        // specialization: appointmentDetails.specialization,
+        // appointmentStatus: "BOOKED"
+      };
+
+      console.log("Sending booking data:", bookingData);
+
+      // Send booking data to the server using the API endpoint
+      fetch('/api/bookings/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData)
+      })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+              })
+              .then(data => {
+                console.log("Booking successful:", data);
+                alert("Appointment booked successfully!");
+                closeModal();
+
+                // Refresh the appointments list to show updated status
+                window.location.reload();
+              })
+              .catch(error => {
+                console.error("Error booking appointment:", error);
+                alert("Failed to book appointment. Please try again.");
+              });
+    });
+
+    // Add event listener for closing the modal
+    document.querySelector(".close-modal").addEventListener("click", closeModal);
+  });
+</script>
+
+</body>
+</html>
