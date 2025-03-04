@@ -3,19 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Search</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Patient Search - Find Your Physiotherapist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #f0f9ff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
         body {
-            background-color: #f8f9fa;
-            color: #2d3748;
+            background-color: var(--gray-50);
+            color: var(--text-dark);
             line-height: 1.6;
             display: flex;
             flex-direction: column;
@@ -23,158 +41,1075 @@
         }
 
         .navbar {
-            background: #003366;
-            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 1rem 2rem;
+            color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand::before {
+            content: "\f5cf";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .navbar-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .navbar-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--white);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 6rem 2rem;
             text-align: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .section {
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            border-radius: 4px;
         }
 
         .container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        h1 {
-            font-size: 28px;
-            color: #003366;
-            margin-bottom: 30px;
+        .search-container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+
+        .search-title {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
             text-align: center;
             font-weight: 700;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .search-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            border-radius: 3px;
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group:hover {
+            transform: translateY(-2px);
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #4a5568;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        label::before {
+            content: "\f0b1";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        .form-group:nth-child(2) label::before {
+            content: "\f5e4";
         }
 
         select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            background-color: white;
-            font-size: 16px;
-            color: #2d3748;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            background-color: var(--white);
+            font-size: 1rem;
+            color: var(--text-dark);
             transition: all 0.2s ease;
             cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232563eb'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
         }
 
         select:focus {
             outline: none;
-            border-color: #003366;
-            box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        select:hover {
+            border-color: var(--primary-light);
         }
 
         button {
             width: 100%;
-            padding: 14px 20px;
-            background-color: #003366;
-            color: white;
+            padding: 0.875rem 1.25rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
             border: none;
-            border-radius: 8px;
+            border-radius: 0.5rem;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
-            transition: all 0.2s ease;
-            box-shadow: 0px 4px 8px rgba(0, 51, 102, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button::after {
+            content: "\f002";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
         }
 
         button:hover {
-            background-color: #002244;
-            transform: translateY(-1px);
-            box-shadow: 0px 4px 8px rgba(0, 51, 102, 0.3);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .features {
+            background-color: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: var(--secondary);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .how-it-works {
+            background-color: var(--gray-50);
+        }
+
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -1rem;
+            width: calc(100% - 40px);
+            height: 2px;
+            background: var(--primary-light);
+            z-index: 1;
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .testimonials {
+            background-color: var(--white);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--gray-50);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 1.5rem;
+            color: var(--gray-300);
+            opacity: 0.5;
+        }
+
+        .testimonial-content {
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            color: var(--text-dark);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .testimonial-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .testimonial-info p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .faq {
+            background-color: var(--gray-50);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        .faq-question {
+            padding: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-answer {
+            padding: 0 1.25rem 1.25rem;
+            color: var(--text-light);
+        }
+
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .partners {
+            background-color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .partners h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+        }
+
+        .partners-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        .partner-logo {
+            max-width: 120px;
+            height: auto;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            opacity: 1;
         }
 
         .footer {
-            background: #003366;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 400;
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
         }
 
-        @media (max-width: 640px) {
-            .container {
-                margin: 20px;
-                padding: 20px;
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.875rem;
+            color: var(--gray-300);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
             }
 
-            h1 {
-                font-size: 24px;
+            .section-title h2 {
+                font-size: 2rem;
             }
+
+            .step:not(:last-child)::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 3rem 1.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.75rem;
+            }
+
+            .search-container {
+                padding: 1.5rem;
+            }
+
+            .search-title {
+                font-size: 1.5rem;
+            }
+
+            .cta h2 {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Animation for page load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-container {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
     </style>
 </head>
 <body>
-<div class="navbar">Find Your Physiotherapist</div>
+<nav class="navbar">
+    <div class="navbar-brand">Find Your Physiotherapist</div>
+    <div class="navbar-links">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#faq">FAQ</a>
+    </div>
+</nav>
 
-<div class="container">
-    <h1>Find Your Physiotherapist</h1>
+<section class="hero">
+    <div class="hero-content">
+        <h1>Find the Perfect Physiotherapist for Your Needs</h1>
+        <p>Connect with specialized physiotherapists in your area who can help you recover faster and live pain-free.</p>
+        <div class="hero-buttons">
+            <a href="#search" class="btn btn-primary">Find a Specialist</a>
+            <a href="#how-it-works" class="btn btn-outline">Learn How It Works</a>
+        </div>
+    </div>
+</section>
 
-    <div class="form-group">
-        <label for="radius">Select your search radius (km):</label>
-        <select id="radius">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="25">25</option>
-            <option value="35">35</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="1000000000">1000000000</option>
-        </select>
+<section id="search" class="section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Find Your Physiotherapist</h2>
+            <p>Search for specialized physiotherapists near you based on your specific needs and location.</p>
+        </div>
+
+        <div class="search-container">
+            <h1 class="search-title">Find Your Physiotherapist</h1>
+
+            <div class="form-group">
+                <label for="radius">Select your search radius (km):</label>
+                <select id="radius">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="25">25</option>
+                    <option value="35">35</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="1000000000">1000000000</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="specialty">Select Specialization:</label>
+                <select id="specialty">
+                    <option value="Neurological Disorder">Neurological Disorder</option>
+                    <option value="Geriatrics">Geriatrics</option>
+                    <option value="Cardiovascular and Pulmonary Physiotherapy">Cardiovascular and Pulmonary Physiotherapy</option>
+                    <option value="Pediatric Physiotherapy">Pediatric Physiotherapy</option>
+                    <option value="Musculoskeletal Physiotherapy">Musculoskeletal Physiotherapy</option>
+                    <option value="Sports Physiotherapy">Sports Physiotherapy</option>
+                    <option value="Cardiovascular Disease">Cardiovascular Disease</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                    <option value="Vestibular Rehabilitation">Vestibular Rehabilitation</option>
+                    <option value="Homecare Physiotherapy">Homecare Physiotherapy</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Pelvic Floor">Pelvic Floor</option>
+                    <option value="Women's Health Physiotherapy">Women's Health Physiotherapy</option>
+                    <option value="Acupuncture">Acupuncture</option>
+                    <option value="Magnetic Therapy">Magnetic Therapy</option>
+                    <option value="Manual Therapy">Manual Therapy</option>
+                    <option value="Oncology">Oncology</option>
+                    <option value="Post Operative Physiotherapist">Post Operative Physiotherapist</option>
+                    <option value="Rehabilitation">Rehabilitation</option>
+                    <option value="Chest Physiotherapy">Chest Physiotherapy</option>
+                    <option value="Women's Health">Women's Health</option>
+                </select>
+            </div>
+
+            <button id="searchButton">Explore Specialists</button>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="section features">
+    <div class="container">
+        <div class="section-title">
+            <h2>Why Choose Our Platform</h2>
+            <p>We connect you with the best physiotherapists tailored to your specific needs.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Verified Specialists</h3>
+                <p>All physiotherapists on our platform are verified professionals with proper credentials and experience.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Location-Based Search</h3>
+                <p>Find specialists near you with our precise location-based search functionality.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>Specialized Care</h3>
+                <p>Filter by specialization to find physiotherapists who focus on your specific condition.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Patient Reviews</h3>
+                <p>Read authentic reviews from other patients to make informed decisions about your care.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="how-it-works" class="section how-it-works">
+    <div class="container">
+        <div class="section-title">
+            <h2>How It Works</h2>
+            <p>Finding the right physiotherapist for your needs is simple and straightforward.</p>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Set Your Location</h3>
+                <p>Choose your preferred search radius to find specialists near you.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Select Specialization</h3>
+                <p>Choose the type of physiotherapy you need from our comprehensive list.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Explore Results</h3>
+                <p>Browse through the list of qualified physiotherapists matching your criteria.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Book Appointment</h3>
+                <p>Contact your chosen specialist and schedule your first appointment.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="testimonials" class="section testimonials">
+    <div class="container">
+        <div class="section-title">
+            <h2>What Our Users Say</h2>
+            <p>Hear from patients who found the perfect physiotherapist through our platform.</p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>I was struggling with chronic back pain for years. Through this platform, I found a specialist in musculoskeletal physiotherapy who helped me recover completely within months.</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Sarah Johnson" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>Back Pain Patient</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>After my sports injury, I needed specialized rehabilitation. This platform connected me with a sports physiotherapist who understood exactly what I needed to get back to playing.</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Torres" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                        <h4>Michael Torres</h4>
+                        <p>Sports Injury Patient</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>Finding a physiotherapist who specializes in post-stroke rehabilitation was crucial for my father's recovery. This service made it so easy to find the right specialist near us.</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa Chen" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                        <h4>Lisa Chen</h4>
+                        <p>Family Caregiver</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="section faq">
+    <div class="container">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Find answers to common questions about our physiotherapist search service.</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">How do I know the physiotherapists are qualified?</div>
+                <div class="faq-answer">
+                    <p>All physiotherapists on our platform are verified professionals with valid licenses and credentials. We perform thorough background checks and verify their qualifications before listing them.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I search for physiotherapists who offer home visits?</div>
+                <div class="faq-answer">
+                    <p>Yes, you can filter your search to find physiotherapists who offer home visits by selecting "Homecare Physiotherapy" in the specialization dropdown.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How accurate is the location-based search?</div>
+                <div class="faq-answer">
+                    <p>Our location-based search uses precise GPS coordinates to find physiotherapists within your selected radius. The accuracy depends on your device's location services being enabled.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Are the reviews from real patients?</div>
+                <div class="faq-answer">
+                    <p>Yes, all reviews on our platform are from verified patients who have received treatment from the physiotherapist. We have a strict verification process to ensure authenticity.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is there a fee for using this service?</div>
+                <div class="faq-answer">
+                    <p>No, our service is completely free for patients. We connect you with physiotherapists without any additional charges or booking fees.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Ready to Start Your Recovery Journey?</h2>
+        <p>Find the perfect physiotherapist tailored to your specific needs and start your path to recovery today.</p>
+        <a href="#search" class="btn btn-outline">Find Your Physiotherapist Now</a>
+    </div>
+</section>
+
+<section class="partners">
+    <div class="container">
+        <h3>Trusted By Leading Healthcare Providers</h3>
+        <div class="partners-logos">
+            <img src="https://via.placeholder.com/120x60?text=Partner+1" alt="Partner 1" class="partner-logo">
+            <img src="https://via.placeholder.com/120x60?text=Partner+2" alt="Partner 2" class="partner-logo">
+            <img src="https://via.placeholder.com/120x60?text=Partner+3" alt="Partner 3" class="partner-logo">
+            <img src="https://via.placeholder.com/120x60?text=Partner+4" alt="Partner 4" class="partner-logo">
+            <img src="https://via.placeholder.com/120x60?text=Partner+5" alt="Partner 5" class="partner-logo">
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Find Your Physiotherapist</h3>
+            <p>Connecting patients with specialized physiotherapists for better healthcare outcomes.</p>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="#search">Find a Physiotherapist</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Specializations</h3>
+            <ul class="footer-links">
+                <li><a href="#">Sports Physiotherapy</a></li>
+                <li><a href="#">Neurological Rehabilitation</a></li>
+                <li><a href="#">Pediatric Physiotherapy</a></li>
+                <li><a href="#">Geriatric Care</a></li>
+                <li><a href="#">Women's Health</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul class="footer-links">
+                <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, Medical District</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                <li><i class="fas fa-envelope"></i> contact@findphysio.com</li>
+                <li><i class="fas fa-clock"></i> Mon-Fri: 9AM-5PM</li>
+            </ul>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="specialty">Select Specialization:</label>
-        <select id="specialty">
-            <option value="Neurological Disorder">Neurological Disorder</option>
-            <option value="Geriatrics">Geriatrics</option>
-            <option value="Cardiovascular and Pulmonary Physiotherapy">Cardiovascular and Pulmonary Physiotherapy</option>
-            <option value="Pediatric Physiotherapy">Pediatric Physiotherapy</option>
-            <option value="Musculoskeletal Physiotherapy">Musculoskeletal Physiotherapy</option>
-            <option value="Sports Physiotherapy">Sports Physiotherapy</option>
-            <option value="Cardiovascular Disease">Cardiovascular Disease</option>
-            <option value="Orthopedics">Orthopedics</option>
-            <option value="Vestibular Rehabilitation">Vestibular Rehabilitation</option>
-            <option value="Homecare Physiotherapy">Homecare Physiotherapy</option>
-            <option value="Pediatrics">Pediatrics</option>
-            <option value="Pelvic Floor">Pelvic Floor</option>
-            <option value="Women's Health Physiotherapy">Women's Health Physiotherapy</option>
-            <option value="Acupuncture">Acupuncture</option>
-            <option value="Magnetic Therapy">Magnetic Therapy</option>
-            <option value="Manual Therapy">Manual Therapy</option>
-            <option value="Oncology">Oncology</option>
-            <option value="Post Operative Physiotherapist">Post Operative Physiotherapist</option>
-            <option value="Rehabilitation">Rehabilitation</option>
-            <option value="Chest Physiotherapy">Chest Physiotherapy</option>
-            <option value="Women's Health">Women's Health</option>
-        </select>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Physiotherapists Directory. All Rights Reserved.</p>
     </div>
-
-    <button id="searchButton">Explore Specialists</button>
-</div>
-
-<div class="footer">&copy; 2025 Physiotherapists Directory. All Rights Reserved.</div>
+</footer>
 
 <script src="/location.js"></script>
+<script>
+    // Simple script to handle FAQ accordion functionality
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentNode;
+            const isActive = item.classList.contains('active');
+
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(faqItem => {
+                faqItem.classList.remove('active');
+                const answer = faqItem.querySelector('.faq-answer');
+                answer.style.maxHeight = null;
+            });
+
+            // If the clicked item wasn't active, open it
+            if (!isActive) {
+                item.classList.add('active');
+                const answer = item.querySelector('.faq-answer');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        });
+    });
+</script>
 </body>
 </html>
+

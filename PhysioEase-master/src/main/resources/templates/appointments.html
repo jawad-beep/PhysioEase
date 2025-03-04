@@ -4,88 +4,424 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Available Appointments</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-light: #eef2ff;
+      --secondary: #0ea5e9;
+      --secondary-dark: #0284c7;
+      --accent: #f97316;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --radius-sm: 0.25rem;
+      --radius: 0.5rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f4f4f9;
-      color: #333;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 3rem;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+      transform: rotate(30deg);
+    }
+
+    .header-content {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      max-width: 600px;
+    }
+
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .breadcrumbs span {
+      margin: 0 0.5rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
     }
 
     h2 {
-      text-align: center;
-      margin: 20px 0;
-      font-size: 2rem;
-      color: #2c3e50;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .filter-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: white;
+      border: 1px solid var(--gray-300);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-700);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-button:hover {
+      border-color: var(--gray-400);
+      background-color: var(--gray-50);
+    }
+
+    .filter-button svg {
+      width: 16px;
+      height: 16px;
     }
 
     .appointment-container {
-      width: 90%;
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .appointment-card {
-      border: 1px solid #ddd;
-      padding: 20px;
-      margin: 15px 0;
-      border-radius: 8px;
-      background-color: #fafafa;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background-color: white;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--gray-200);
+      display: flex;
+      flex-direction: column;
     }
 
     .appointment-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
 
-    .appointment-card p {
-      margin: 10px 0;
-      font-size: 1rem;
-      color: #555;
+    .card-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--gray-200);
+      background-color: var(--gray-50);
     }
 
-    .appointment-card p strong {
-      color: #2c3e50;
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-title svg {
+      width: 20px;
+      height: 20px;
+      color: var(--primary);
+    }
+
+    .card-subtitle {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      flex: 1;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .info-item {
+      margin-bottom: 0.75rem;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-500);
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .info-value {
+      font-size: 0.9375rem;
+      color: var(--gray-800);
+      font-weight: 500;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-available {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .status-booked {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .card-footer {
+      padding: 1.25rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--gray-50);
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--gray-900);
+      font-size: 1.125rem;
     }
 
     .book-button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      color: #fff;
-      background-color: #3498db;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: white;
+      background-color: var(--primary);
       border: none;
-      border-radius: 5px;
+      border-radius: var(--radius);
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.2s ease;
     }
 
     .book-button:hover:not(:disabled) {
-      background-color: #2980b9;
+      background-color: var(--primary-dark);
     }
 
     .book-button:disabled {
-      background-color: #bdc3c7;
+      background-color: var(--gray-300);
       cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .book-button svg {
+      width: 18px;
+      height: 18px;
     }
 
     .no-appointments {
       text-align: center;
-      font-size: 1.2rem;
-      color: #777;
+      padding: 3rem;
+      background-color: white;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+      grid-column: 1 / -1;
+    }
+
+    .no-appointments-icon {
+      font-size: 3rem;
+      color: var(--gray-400);
+      margin-bottom: 1rem;
+    }
+
+    .no-appointments-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .no-appointments-text {
+      color: var(--gray-600);
+      max-width: 400px;
+      margin: 0 auto;
     }
 
     .error-message {
       text-align: center;
-      font-size: 1.2rem;
-      color: #e74c3c;
+      padding: 3rem;
+      background-color: white;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      grid-column: 1 / -1;
+    }
+
+    .error-icon {
+      font-size: 3rem;
+      color: var(--danger);
+      margin-bottom: 1rem;
+    }
+
+    .error-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .error-text {
+      color: var(--gray-600);
+      max-width: 400px;
+      margin: 0 auto 1rem;
+    }
+
+    .retry-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: white;
+      background-color: var(--primary);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .retry-button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2rem;
+      gap: 0.5rem;
+    }
+
+    .pagination-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-300);
+      background-color: white;
+      color: var(--gray-700);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .pagination-button.active {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .pagination-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-button svg {
+      width: 16px;
+      height: 16px;
     }
 
     /* Modal Styles */
@@ -99,113 +435,379 @@
       background-color: rgba(0, 0, 0, 0.5);
       justify-content: center;
       align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
     }
 
     .modal-content {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
+      background-color: white;
+      border-radius: var(--radius-lg);
       width: 90%;
-      max-width: 500px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 550px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: modalFadeIn 0.3s ease;
     }
 
-    .modal-content h3 {
-      margin-top: 0;
-      color: #2c3e50;
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .modal-content label {
+    .modal-header {
+      padding: 1.5rem;
+      background-color: var(--primary-light);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .modal-title svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .modal-subtitle {
+      font-size: 0.9375rem;
+      color: var(--gray-600);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
       display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-      color: #555;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-700);
     }
 
-    .modal-content input,
-    .modal-content textarea {
+    .form-control {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.9375rem;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius);
+      background-color: white;
+      color: var(--gray-800);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .modal-content button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      color: #fff;
-      background-color: #3498db;
-      border: none;
-      border-radius: 5px;
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .modal-footer {
+      padding: 1.25rem 1.5rem;
+      background-color: var(--gray-50);
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      border-radius: var(--radius);
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.2s ease;
     }
 
-    .modal-content button:hover {
-      background-color: #2980b9;
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border: none;
     }
 
-    .modal-content button.cancel {
-      background-color: #e74c3c;
-      margin-left: 10px;
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
     }
 
-    .modal-content button.cancel:hover {
-      background-color: #c0392b;
+    .btn-secondary {
+      background-color: white;
+      color: var(--gray-700);
+      border: 1px solid var(--gray-300);
     }
 
-    @media (max-width: 600px) {
+    .btn-secondary:hover {
+      background-color: var(--gray-50);
+      border-color: var(--gray-400);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+
+    .appointment-summary {
+      background-color: var(--gray-50);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--gray-200);
+    }
+
+    .summary-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.75rem;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .summary-label {
+      color: var(--gray-600);
+    }
+
+    .summary-value {
+      font-weight: 500;
+      color: var(--gray-800);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
       .appointment-container {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        padding: 1.5rem 0;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .filter-controls {
         width: 100%;
-        padding: 10px;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
       }
 
-      .appointment-card {
-        padding: 15px;
+      .book-button {
+        width: 100%;
       }
 
-      h2 {
-        font-size: 1.5rem;
+      .modal-footer {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
 
-<h2>Available Appointments</h2>
+<header class="header">
+  <div class="header-content">
+    <div class="breadcrumbs">
+      <a href="/" style="color: white; text-decoration: none;">Home</a>
+      <span>/</span>
+      <a href="/physiotherapists" style="color: white; text-decoration: none;">Physiotherapists</a>
+      <span>/</span>
+      <a href="#" style="color: white; text-decoration: none;">Appointments</a>
+    </div>
+    <h1>Available Appointments</h1>
+    <p>Schedule your next physiotherapy session with our expert therapists</p>
+  </div>
+</header>
 
-<div id="appointments-container" class="appointment-container">
-  <!-- Appointment details will be inserted here -->
+<div class="container">
+  <div class="section-header">
+    <h2>Select an Appointment</h2>
+    <div class="filter-controls">
+      <button class="filter-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        Date
+      </button>
+      <button class="filter-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Time
+      </button>
+      <button class="filter-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+        </svg>
+        Sort
+      </button>
+    </div>
+  </div>
+
+  <div id="appointments-container" class="appointment-container">
+    <!-- Appointment details will be inserted here -->
+  </div>
+
+  <div class="pagination">
+    <button class="pagination-button" disabled>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <button class="pagination-button active">1</button>
+    <button class="pagination-button">2</button>
+    <button class="pagination-button">3</button>
+    <button class="pagination-button">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
 </div>
 
 <!-- Modal for Booking Form -->
 <div id="booking-modal" class="modal">
   <div class="modal-content">
-    <h3>Book Appointment</h3>
-    <form id="booking-form">
-      <label for="patient-name">Patient Name:</label>
-      <input type="text" id="patient-name" name="patient-name" required>
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        Book Appointment
+      </div>
+      <div class="modal-subtitle">Please fill in your details to confirm your booking</div>
+    </div>
+    <div class="modal-body">
+      <div class="appointment-summary">
+        <div class="summary-title">Appointment Details</div>
+        <div class="summary-item">
+          <span class="summary-label">Physiotherapist:</span>
+          <span class="summary-value" id="summary-physio">Dr. John Smith</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Specialization:</span>
+          <span class="summary-value" id="summary-specialization">Sports Rehabilitation</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Date:</span>
+          <span class="summary-value" id="summary-date">May 15, 2023</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Time:</span>
+          <span class="summary-value" id="summary-time">10:00 AM</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Type:</span>
+          <span class="summary-value" id="summary-type">In-person</span>
+        </div>
+      </div>
 
-      <label for="patient-problem">Patient Problem:</label>
-      <textarea id="patient-problem" name="patient-problem" rows="3" required></textarea>
-
-      <label for="patient-contact">Contact Number:</label>
-      <input type="tel" id="patient-contact" name="patient-contact" required>
-
-      <label for="patient-address">Address:</label>
-      <input type="text" id="patient-address" name="patient-address" required>
-
-      <label for="patient-age">Age:</label>
-      <input type="number" id="patient-age" name="patient-age" required>
-
-      <label for="patient-email">Email Address:</label>
-      <input type="email" id="patient-email" name="patient-email" required>
-
-      <button type="submit">Submit</button>
-      <button type="button" class="cancel" onclick="closeModal()">Cancel</button>
-    </form>
+      <form id="booking-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="patient-name" class="form-label">Patient Name</label>
+            <input type="text" id="patient-name" name="patient-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="patient-age" class="form-label">Age</label>
+            <input type="number" id="patient-age" name="patient-age" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="patient-email" class="form-label">Email Address</label>
+            <input type="email" id="patient-email" name="patient-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="patient-contact" class="form-label">Contact Number</label>
+            <input type="tel" id="patient-contact" name="patient-contact" class="form-control" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="patient-address" class="form-label">Address</label>
+            <input type="text" id="patient-address" name="patient-address" class="form-control" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="patient-problem" class="form-label">Describe Your Condition</label>
+            <textarea id="patient-problem" name="patient-problem" rows="3" class="form-control" required></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button type="submit" form="booking-form" class="btn btn-primary">Confirm Booking</button>
+    </div>
   </div>
 </div>
 
@@ -228,31 +830,89 @@
               const container = document.getElementById("appointments-container");
 
               if (appointments.length === 0) {
-                container.innerHTML = "<p class='no-appointments'>No appointments available.</p>";
+                container.innerHTML = `
+                  <div class="no-appointments">
+                    <div class="no-appointments-icon">📅</div>
+                    <div class="no-appointments-title">No Appointments Available</div>
+                    <p class="no-appointments-text">There are currently no available appointments with this physiotherapist. Please check back later or select another therapist.</p>
+                  </div>
+                `;
                 return;
               }
 
               appointments.forEach(app => {
                 const appointmentCard = document.createElement("div");
                 appointmentCard.classList.add("appointment-card");
+
+                // Format date for better display
+                const dateObj = new Date(app.bookingdate);
+                const formattedDate = dateObj.toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                });
+
                 appointmentCard.innerHTML = `
-          <p><strong>ID:</strong> ${app.appointmentid}</p>
-          <p><strong>Name:</strong> ${app.physiotherapistname}</p>
-          <p><strong>Specialization:</strong> ${app.specialization}</p>
-          <p><strong>Date:</strong> ${app.bookingdate}</p>
-          <p><strong>Time:</strong> ${app.bookingtime}</p>
-          <p><strong>Status:</strong> ${app.appointmentstatus}</p>
-          <p><strong>Type:</strong> ${app.appointmenttype}</p>
-          <button class="book-button" ${app.appointmentstatus === 'BOOKED' ? 'disabled' : ''}>
-            ${app.appointmentstatus === 'BOOKED' ? 'Booked' : 'Book'}
-          </button>
-        `;
+                  <div class="card-header">
+                    <div class="card-title">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      ${app.physiotherapistname}
+                    </div>
+                    <div class="card-subtitle">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                      ${app.specialization}
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="info-grid">
+                      <div class="info-item">
+                        <div class="info-label">Date</div>
+                        <div class="info-value">${formattedDate}</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="info-label">Time</div>
+                        <div class="info-value">${app.bookingtime}</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="info-label">Type</div>
+                        <div class="info-value">${app.appointmenttype}</div>
+                      </div>
+                      <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value">
+                          <span class="status-badge ${app.appointmentstatus === 'BOOKED' ? 'status-booked' : 'status-available'}">
+                            ${app.appointmentstatus}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="price">$75.00</div>
+                    <button class="book-button" ${app.appointmentstatus === 'BOOKED' ? 'disabled' : ''}>
+                      ${app.appointmentstatus === 'BOOKED' ? 'Booked' : 'Book Appointment'}
+                      ${app.appointmentstatus !== 'BOOKED' ? '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>' : ''}
+                    </button>
+                  </div>
+                `;
 
                 // Add click event to the BOOK button (only if status is AVAILABLE)
                 const bookButton = appointmentCard.querySelector('.book-button');
                 if (bookButton && !bookButton.disabled) {
                   bookButton.addEventListener('click', () => {
                     openModal(app);
+
+                    // Update the summary in the modal
+                    document.getElementById('summary-physio').textContent = app.physiotherapistname;
+                    document.getElementById('summary-specialization').textContent = app.specialization;
+                    document.getElementById('summary-date').textContent = formattedDate;
+                    document.getElementById('summary-time').textContent = app.bookingtime;
+                    document.getElementById('summary-type').textContent = app.appointmenttype;
                   });
                 }
 
@@ -261,12 +921,18 @@
             })
             .catch(error => {
               console.error("Error fetching appointments:", error);
-              document.getElementById("appointments-container").innerHTML =
-                      "<p class='error-message'>Error loading appointments. Please try again.</p>";
+              document.getElementById("appointments-container").innerHTML = `
+                <div class="error-message">
+                  <div class="error-icon">⚠️</div>
+                  <div class="error-title">Error Loading Appointments</div>
+                  <p class="error-text">We couldn't load the appointments at this time. Please try again later.</p>
+                  <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+                </div>
+              `;
             });
 
     // Function to open the modal - now accepts the full appointment object
-    function openModal(appointment) {
+    window.openModal = function(appointment) {
       const modal = document.getElementById("booking-modal");
       modal.style.display = "flex";
       modal.dataset.appointmentId = appointment.appointmentid;
@@ -275,7 +941,7 @@
     }
 
     // Function to close the modal
-    function closeModal() {
+    window.closeModal = function() {
       const modal = document.getElementById("booking-modal");
       modal.style.display = "none";
       document.getElementById("booking-form").reset();
@@ -349,9 +1015,6 @@
                 alert("Failed to book appointment. Please try again.");
               });
     });
-
-    // Add event listener for closing the modal
-    document.querySelector(".close-modal").addEventListener("click", closeModal);
   });
 </script>
 
