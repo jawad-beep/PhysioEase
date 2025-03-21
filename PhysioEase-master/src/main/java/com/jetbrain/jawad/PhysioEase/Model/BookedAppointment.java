@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class BookedAppointment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // If ID is auto-generated
     private int bookedappointmentid;
 
     private String patientname;
@@ -99,4 +98,5 @@ public class BookedAppointment {
     public void setemailaddress(String emailaddress) {
         this.emailaddress = emailaddress;
     }
+
 }

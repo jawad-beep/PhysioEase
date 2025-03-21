@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "Appointment")
 public class Appointment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incremented ID
     private int appointmentid;
 
     @ManyToOne
